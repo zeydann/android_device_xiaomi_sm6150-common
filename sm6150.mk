@@ -7,6 +7,9 @@
 # Call the proprietary setup
 $(call inherit-product, vendor/xiaomi/sm6150-common/sm6150-common-vendor.mk)
 
+# MiuiCamera
+$(call inherit-product, vendor/xiaomi/miuicamera/config.mk)
+
 # Camera
 $(call inherit-product-if-exists, vendor/miuicamera/config.mk)
 
