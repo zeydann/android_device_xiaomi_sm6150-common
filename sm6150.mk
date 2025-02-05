@@ -244,7 +244,7 @@ PRODUCT_COPY_FILES += \
 
 # Lights
 PRODUCT_PACKAGES += \
-    android.hardware.light-service.xiaomi
+    android.hardware.light-service.lineage
 
 # Lineage Health
 PRODUCT_PACKAGES += \
@@ -308,6 +308,12 @@ DEVICE_PACKAGE_OVERLAYS += \
 
 PRODUCT_ENFORCE_RRO_TARGETS += *
 
+# Partitions
+PRODUCT_PACKAGES += \
+    vendor_bt_firmware_mountpoint \
+    vendor_dsp_mountpoint \
+    vendor_firmware_mnt_mountpoint
+
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power@1.2 \
@@ -346,6 +352,7 @@ PRODUCT_PACKAGES += \
     init.qcom.sh \
     fstab.zram \
     fstab.qcom \
+    fstab.qcom.ramdisk \
     init.qcom.power.rc \
     init.qcom.rc \
     init.recovery.qcom.rc \

@@ -183,15 +183,7 @@ TARGET_PRODUCT_PROP += $(COMMON_PATH)/configs/props/product.prop
 TARGET_SYSTEM_EXT_PROP += $(COMMON_PATH)/configs/props/system_ext.prop
 
 # Recovery
-ifeq ($(PRODUCT_USE_DYNAMIC_PARTITIONS),true)
-ifeq ($(PRODUCT_VIRTUAL_AB_OTA),true)
-TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/rootdir/etc/fstab_AB.qcom
-else
-TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/rootdir/etc/fstab.qcom
-endif
-else
-TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/rootdir/etc/fstab_SAR.qcom
-endif
+TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/init/fstab.qcom
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_INCLUDE_RECOVERY_DTBO := true
