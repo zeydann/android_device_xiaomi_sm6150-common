@@ -528,12 +528,9 @@ PRODUCT_COPY_FILES += \
 
 # WiFi Display
 PRODUCT_PACKAGES += \
-    android.media.audio.common.types-V2-cpp
-
-PRODUCT_PACKAGES += \
     libexif.vendor \
     libpng.vendor:32
-
+    
 # Device-specific settings
 PRODUCT_PACKAGES += \
     XiaomiParts
