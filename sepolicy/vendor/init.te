@@ -1,4 +1,5 @@
 allow init same_process_hal_file:file execute;
+allow vendor_init exported3_system_prop:property_service set;
 
 allow init proc_last_kmsg:file {
   r_file_perms

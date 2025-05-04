@@ -24,6 +24,7 @@ import android.util.Log;
 
 import org.lineageos.settings.dirac.DiracUtils;
 import org.lineageos.settings.doze.DozeUtils;
+import org.lineageos.settings.powertools.PowerProfileTileService;
 import org.lineageos.settings.thermal.ThermalUtils;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
@@ -33,9 +34,64 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        if (DEBUG) Log.d(TAG, "Received boot completed intent");
-        DiracUtils.initialize();
-        DozeUtils.checkDozeService(context);
-        ThermalUtils.startService(context);
+        if (DEBUG) Log.i(TAG, "Received intent: " + intent.getAction());
+        switch (intent.getAction()) {
+            case Intent.ACTION_LOCKED_BOOT_COMPLETED:
+                handleLockedBootCompleted(context);
+                break;
+            case Intent.ACTION_BOOT_COMPLETED:
+                handleBootCompleted(context);
+                break;
+        }
+    }
+
+    private void handleLockedBootCompleted(Context context) {
+        if (DEBUG) Log.i(TAG, "Handling locked boot completed.");
+        try {
+            // Start necessary services
+            startServices(context);
+
+            // Override HDR types
+            overrideHdrTypes(context);
+
+        } catch (Exception e) {
+            Log.e(TAG, "Error during locked boot completed processing", e);
+        }
+    }
+
+    private void handleBootCompleted(Context context) {
+        if (DEBUG) Log.i(TAG, "Handling boot completed.");
+        // Add additional boot-completed actions if needed
+    }
+
+    private void startServices(Context context) {
+        if (DEBUG) Log.i(TAG, "Starting services...");
+
+        // Initialize Doze features
+        DozeUtils.onBootCompleted(context);
+
+        // Start Thermal Management Services
+        ThermalUtils.getInstance(context).startService();
+        context.startServiceAsUser(new Intent(context, ThermalTileService.class), UserHandle.CURRENT);
+
+        // Start Power Profile Tile Service
+        context.startServiceAsUser(new Intent(context, PowerProfileTileService.class), UserHandle.CURRENT);
+    }
+
+    private void overrideHdrTypes(Context context) {
+        try {
+            final DisplayManager dm = context.getSystemService(DisplayManager.class);
+            if (dm != null) {
+                dm.overrideHdrTypes(Display.DEFAULT_DISPLAY, new int[]{
+                        HdrCapabilities.HDR_TYPE_DOLBY_VISION,
+                        HdrCapabilities.HDR_TYPE_HDR10,
+                        HdrCapabilities.HDR_TYPE_HLG,
+                        HdrCapabilities.HDR_TYPE_HDR10_PLUS
+                });
+                if (DEBUG) Log.i(TAG, "HDR types overridden successfully.");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error overriding HDR types", e);
+        }
     }
 }
